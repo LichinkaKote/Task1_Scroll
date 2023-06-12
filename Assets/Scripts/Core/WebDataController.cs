@@ -24,11 +24,11 @@ namespace Assets.Scripts.Core
                 {
                     case UnityWebRequest.Result.ConnectionError:
                     case UnityWebRequest.Result.DataProcessingError:
-                        Debug.LogError(": Error: " + request.error);
+                        Debug.LogError(request.url + ": " + request.error);
                         result.Reject(null);
                         break;
                     case UnityWebRequest.Result.ProtocolError:
-                        Debug.LogError(": HTTP Error: " + request.error);
+                        Debug.LogError(request.url + ": " + request.error);
                         result.Reject(null);
                         break;
                     case UnityWebRequest.Result.Success:

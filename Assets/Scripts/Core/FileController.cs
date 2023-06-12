@@ -1,16 +1,15 @@
 ﻿using RSG;
-using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using UniRx;
 
 namespace Assets.Scripts.Core
 {
     public class FileController
     {
-        public const int FILE_COUNT = 1;
-        private struct FileData
+        public const int FILE_COUNT = 66;
+        public ReactiveProperty<float> CachingProgress { get; private set; } = new ReactiveProperty<float>();
+        private class FileData
         {
             public bool IsLoaded => data != null;
             public string path;
@@ -55,6 +54,26 @@ namespace Assets.Scripts.Core
             fileCache[index].SetData(spr);
             var result = new Promise<Sprite>();
             result.Resolve(spr);
+            return result;
+        }
+        public IPromise CacheFiles(int count)
+        {
+            CachingProgress.Value = 0f;
+            var promiseList = new List<Promise>();
+            for (int i = 0; i < count && i < FILE_COUNT; i++)
+            {
+                if (TryGetSprite(i, out IPromise<Sprite> sprite))
+                {
+                    var promise = new Promise();
+                    promiseList.Add(promise);
+                    sprite.Finally(() => 
+                    { 
+                        CachingProgress.Value += Mathf.Round(1f / count * 100f);
+                        promise.Resolve();
+                    }) ;
+                }
+            }
+            var result = Promise.All(promiseList);
             return result;
         }
     }
