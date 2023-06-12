@@ -13,7 +13,7 @@ namespace Assets.Scripts.UI.Gallery
         [SerializeField] private Button btn;
 
         private int ID;
-        private bool inited;
+        private bool loaded, inited;
 
         private void Start()
         {
@@ -23,23 +23,33 @@ namespace Assets.Scripts.UI.Gallery
         public void Init(int id)
         {
             ID = id;
-            if (Game.FileController.TryGetSprite(ID, out IPromise<Sprite> sprite))
-            {
-                sprite.Then(s => 
-                {
-                    if (this) 
-                    { 
-                        image.sprite = s; 
-                        inited = true; 
-                    }
-                });
-            }
+            inited = true;
         }
         private void OnClick()
         {
-            if (!inited) return;
+            if (!loaded) return;
             Gallery.SelectedFileID = ID;
             SceneController.LoadView();
+        }
+        private void OnEnable()
+        {
+            Load();
+        }
+        public void Load()
+        {
+            if (loaded || !inited) return;
+
+            if (Game.FileController.TryGetSprite(ID, out IPromise<Sprite> sprite))
+            {
+                sprite.Then(s =>
+                {
+                    if (this)
+                    {
+                        image.sprite = s;
+                        loaded = true;
+                    }
+                });
+            }
         }
     }
 }

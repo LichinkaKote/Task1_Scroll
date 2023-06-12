@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Core;
 using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +20,14 @@ namespace Assets.Scripts.UI.Gallery
             Utils.SetGridCellSizeByWidth(grid, scrollRect.viewport);
             for (int i = 0; i < FileController.FILE_COUNT; i++)
             {
-                var inst = Instantiate(imageViewPf, scrollRect.content);
+                var inst = Instantiate(imageViewPf, grid.transform);
                 inst.Init(i);
+                if (i < FileController.INIT_CACHE_SIZE)
+                {
+                    inst.Load();
+                }
             }
+
             closeBtn.onClick.AddListener(CloseWindow);
         }
 

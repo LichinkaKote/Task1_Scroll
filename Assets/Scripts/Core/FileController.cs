@@ -8,6 +8,7 @@ namespace Assets.Scripts.Core
     public class FileController
     {
         public const int FILE_COUNT = 66;
+        public const int INIT_CACHE_SIZE = 8;
         public ReactiveProperty<float> CachingProgress { get; private set; } = new ReactiveProperty<float>();
         private class FileData
         {
@@ -56,11 +57,11 @@ namespace Assets.Scripts.Core
             result.Resolve(spr);
             return result;
         }
-        public IPromise CacheFiles(int count)
+        public IPromise CacheFiles()
         {
             CachingProgress.Value = 0f;
             var promiseList = new List<Promise>();
-            for (int i = 0; i < count && i < FILE_COUNT; i++)
+            for (int i = 0; i < INIT_CACHE_SIZE && i < FILE_COUNT; i++)
             {
                 if (TryGetSprite(i, out IPromise<Sprite> sprite))
                 {
@@ -68,7 +69,7 @@ namespace Assets.Scripts.Core
                     promiseList.Add(promise);
                     sprite.Finally(() => 
                     { 
-                        CachingProgress.Value += Mathf.Round(1f / count * 100f);
+                        CachingProgress.Value += Mathf.Round(1f / INIT_CACHE_SIZE * 100f);
                         promise.Resolve();
                     }) ;
                 }

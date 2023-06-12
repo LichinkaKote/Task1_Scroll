@@ -29,7 +29,7 @@ namespace Assets.Scripts.Core
         {
             Load(Scenes.Loading)
                 .Then(() => Utils.NextFrame(1))
-                .Then(() => Game.FileController.CacheFiles(8))
+                .Then(() => Game.FileController.CacheFiles())
                 .Then(() => Load(Scenes.Gallery)); 
         }
 
