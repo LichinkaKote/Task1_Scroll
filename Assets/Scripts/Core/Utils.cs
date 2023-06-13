@@ -56,5 +56,12 @@ namespace Assets.Scripts.Core
             var size = (width - padding - spacing) / grid.constraintCount;
             grid.cellSize = new Vector2(size, size);
         }
+        public static void EscapeHandle(Action action)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                action.Invoke();
+            }
+        }
     }
 }

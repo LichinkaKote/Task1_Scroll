@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Core;
 using RSG;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +8,8 @@ namespace Assets.Scripts.UI.Gallery
     public class GalleryImageView : MonoBehaviour
     {
         [SerializeField] private Image image;
-
         [SerializeField] private Button btn;
+        [SerializeField] private Loader loader;
 
         private int ID;
         private bool loaded, inited;
@@ -47,6 +46,7 @@ namespace Assets.Scripts.UI.Gallery
                     {
                         image.sprite = s;
                         loaded = true;
+                        loader.gameObject.SetActive(false);
                     }
                 });
             }

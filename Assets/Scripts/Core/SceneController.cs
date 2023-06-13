@@ -1,7 +1,6 @@
 ﻿using RSG;
-using System.Diagnostics;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Core
 {
@@ -27,15 +26,18 @@ namespace Assets.Scripts.Core
 
         public static void LoadGallery()
         {
+            Screen.orientation = ScreenOrientation.Portrait;
             Load(Scenes.Loading)
                 .Then(() => Utils.NextFrame(1))
                 .Then(() => Game.FileController.CacheFiles())
-                .Then(() => Load(Scenes.Gallery)); 
+                .Then(() => Load(Scenes.Gallery));
         }
 
         public static void LoadView()
         {
-            Load(Scenes.View);
+            Load(Scenes.View)
+                .Then(() => Screen.orientation = ScreenOrientation.AutoRotation);
+            
         }
         public static void LoadMain()
         {

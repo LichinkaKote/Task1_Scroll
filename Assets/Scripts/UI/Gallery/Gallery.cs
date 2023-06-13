@@ -1,9 +1,7 @@
 ﻿using Assets.Scripts.Core;
-using System;
-using System.Collections;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 namespace Assets.Scripts.UI.Gallery
 {
@@ -13,9 +11,10 @@ namespace Assets.Scripts.UI.Gallery
         [SerializeField] private GridLayoutGroup grid;
         [SerializeField] private GalleryImageView imageViewPf;
         [SerializeField] private Button closeBtn;
+        [SerializeField] private UI_ScrollRectOcclusion scrollRectOcclusion;
         public static int SelectedFileID;
 
-        private void Awake()
+        private void Start()
         {
             Utils.SetGridCellSizeByWidth(grid, scrollRect.viewport);
             for (int i = 0; i < FileController.FILE_COUNT; i++)
@@ -29,12 +28,17 @@ namespace Assets.Scripts.UI.Gallery
             }
 
             closeBtn.onClick.AddListener(CloseWindow);
+            scrollRectOcclusion.Init();
         }
 
         private void CloseWindow()
         {
             SceneController.LoadMain();
             closeBtn.enabled = false;
+        }
+        private void Update()
+        {
+            Utils.EscapeHandle(CloseWindow);
         }
     }
 }

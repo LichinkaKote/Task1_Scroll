@@ -1,6 +1,4 @@
 ﻿using Assets.Scripts.Core;
-using System;
-using System.Collections;
 using TMPro;
 using UniRx;
 using UnityEngine;

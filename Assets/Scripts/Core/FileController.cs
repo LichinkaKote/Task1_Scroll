@@ -8,7 +8,7 @@ namespace Assets.Scripts.Core
     public class FileController
     {
         public const int FILE_COUNT = 66;
-        public const int INIT_CACHE_SIZE = 8;
+        public const int INIT_CACHE_SIZE = 12;
         public ReactiveProperty<float> CachingProgress { get; private set; } = new ReactiveProperty<float>();
         private class FileData
         {

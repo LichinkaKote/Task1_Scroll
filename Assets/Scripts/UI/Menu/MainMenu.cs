@@ -1,6 +1,4 @@
 using Assets.Scripts.Core;
-using RSG;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 

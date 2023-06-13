@@ -26,5 +26,9 @@ namespace Assets.Scripts.UI.View
             SceneController.LoadGallery();
             closeBtn.enabled = false;
         }
+        private void Update()
+        {
+            Utils.EscapeHandle(CloseWindow);
+        }
     }
 }
