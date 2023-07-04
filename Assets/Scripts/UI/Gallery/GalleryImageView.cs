@@ -38,7 +38,7 @@ namespace Assets.Scripts.UI.Gallery
         {
             if (loaded || !inited) return;
 
-            if (Game.FileController.TryGetSprite(ID, out IPromise<Sprite> sprite))
+            if (Game.FileController.TryGetSprite(ID, out Promise<Sprite> sprite))
             {
                 sprite.Then(s =>
                 {

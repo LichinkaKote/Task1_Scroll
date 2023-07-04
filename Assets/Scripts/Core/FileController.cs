@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Core
 {
@@ -30,7 +32,7 @@ namespace Assets.Scripts.Core
                 fileCache.Add(new FileData { path = file });
             }
         }
-        public bool TryGetSprite(int index, out IPromise<Sprite> sprite)
+        public bool TryGetSprite(int index, out Promise<Sprite> sprite)
         {
             sprite = null;
             if (fileCache.Count > index)
@@ -38,24 +40,24 @@ namespace Assets.Scripts.Core
                 if (fileCache[index].IsLoaded)
                 {
                     sprite = new Promise<Sprite>();
-                    (sprite as Promise<Sprite>).Resolve(fileCache[index].data);
+                    sprite.Resolve(fileCache[index].data);
                 }
                 else
                 {
-                    sprite = Game.WebDataController.SendTextureRequest(fileCache[index].path)
-                        .Then((spr) => UpdateCache(index, spr));
+                    sprite = Game.WebDataController.SendTextureRequest(fileCache[index].path);
+                    sprite.Then((spr) =>
+                        {
+                            UpdateCache(index, spr);
+                        });
                 }
                 return true;
             }
             else 
                 return false;
         }
-        private IPromise<Sprite> UpdateCache(int index, Sprite spr)
+        private void UpdateCache(int index, Sprite spr)
         {
             fileCache[index].SetData(spr);
-            var result = new Promise<Sprite>();
-            result.Resolve(spr);
-            return result;
         }
         public IPromise CacheFiles()
         {
@@ -63,7 +65,7 @@ namespace Assets.Scripts.Core
             var promiseList = new List<Promise>();
             for (int i = 0; i < INIT_CACHE_SIZE && i < FILE_COUNT; i++)
             {
-                if (TryGetSprite(i, out IPromise<Sprite> sprite))
+                if (TryGetSprite(i, out Promise<Sprite> sprite))
                 {
                     var promise = new Promise();
                     promiseList.Add(promise);

@@ -12,7 +12,7 @@ namespace Assets.Scripts.UI.View
 
         private void Awake()
         {
-            if (Game.FileController.TryGetSprite(Gallery.Gallery.SelectedFileID, out IPromise<Sprite> sprite))
+            if (Game.FileController.TryGetSprite(Gallery.Gallery.SelectedFileID, out Promise<Sprite> sprite))
             {
                 sprite.Then(s =>
                 {

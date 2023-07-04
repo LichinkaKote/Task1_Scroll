@@ -6,9 +6,10 @@ namespace Assets.Scripts.Core
 {
     public class WebDataController
     {
-        public IPromise<Sprite> SendTextureRequest(string url)
+        public Promise<Sprite> SendTextureRequest(string url)
         {
             var request = UnityWebRequestTexture.GetTexture(url);
+            request.timeout = 7;
             var result = new Promise<Sprite>();
             request.SendWebRequest().completed += (req) =>
             {
